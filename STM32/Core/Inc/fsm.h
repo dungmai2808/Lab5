@@ -26,7 +26,7 @@ UART_HandleTypeDef huart2;
 uint8_t temp;
 uint8_t buffer_flag;
 
-extern int com_status;
+extern int command_status;
 extern int uart_status;
 
 void command_parser_fsm();

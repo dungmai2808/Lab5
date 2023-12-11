@@ -39,7 +39,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 }
 void sendADC() {
 	ADC_value = HAL_ADC_GetValue(&hadc1);
-	HAL_UART_Transmit(&huart2, (void *)str,  sprintf(str, "\r\n!ADC=%d#", ADC_value), 1000);
+	HAL_UART_Transmit(&huart2, (void *)str,  sprintf(str, "\n!ADC=%d#\n", ADC_value), 1000);
 }
 void command_parser_fsm(){
 	switch (command_status) {
