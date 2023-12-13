@@ -10,21 +10,24 @@
 
 #include "main.h"
 #include "string.h"
+#include "stdio.h"
 #include "software_timer.h"
 
 #define MAX_BUFFER_SIZE  30
 
+#define INIT 			0
 #define CHECK			1
 #define PROCESS_COMMAND	2
 #define WAIT			3
 #define RESPONE			4
 #define REPEAT			5
 
-ADC_HandleTypeDef hadc1;
 UART_HandleTypeDef huart2;
 
 uint8_t temp;
 uint8_t buffer_flag;
+
+extern int command_flag;
 
 extern int command_status;
 extern int uart_status;

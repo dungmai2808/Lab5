@@ -7,15 +7,15 @@
 
 
 #include "fsm.h"
-#include "stdio.h"
 
 uint8_t buffer[MAX_BUFFER_SIZE];
 uint8_t index_buffer = 0;
 
 uint32_t ADC_value;
-uint8_t str[30];
 
 uint8_t buffer_flag = 0;
+
+int command_flag;
 
 int command_status = CHECK;
 int uart_status = WAIT;
@@ -37,12 +37,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 		HAL_UART_Receive_IT(&huart2, &temp, 1);
 	}
 }
-void sendADC() {
-	ADC_value = HAL_ADC_GetValue(&hadc1);
-	HAL_UART_Transmit(&huart2, (void *)str,  sprintf(str, "\n!ADC=%d#\n", ADC_value), 1000);
-}
 void command_parser_fsm(){
 	switch (command_status) {
+		case INIT:
+			clear_buffer();
+			command_status = CHECK;
+			break;
 		case CHECK:
 			if (temp == '!'){
 				command_status = PROCESS_COMMAND;
@@ -68,7 +68,7 @@ void uart_communication_fsm(){
 			break;
 		case RESPONE:
 			if (strcmp(get_command(), "!RST#") == 0){
-				sendADC();
+				command_flag = 1;
 				uart_status = REPEAT;
 				setTimer1(3000);
 			}
@@ -79,7 +79,7 @@ void uart_communication_fsm(){
 			break;
 		case REPEAT:
 			if (timer1_flag == 1){
-				sendADC();
+				command_flag = 1;
 				setTimer1(3000);
 			}
 			if (strcmp(get_command(), "!OK#") == 0){

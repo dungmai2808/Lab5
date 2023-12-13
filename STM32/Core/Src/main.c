@@ -107,6 +107,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   command_status = CHECK;
   uart_status = WAIT;
+  uint32_t ADC_value;
+  uint8_t str[30];
   while (1)
   {
     /* USER CODE END WHILE */
@@ -116,6 +118,11 @@ int main(void)
 		  buffer_flag = 0;
 	  }
 	  uart_communication_fsm();
+	  if (command_flag == 1) {
+		  ADC_value = HAL_ADC_GetValue(&hadc1);
+		  HAL_UART_Transmit(&huart2, (void *)str,  sprintf(str, "\n!ADC=%ld#\n", ADC_value), 1000);
+		  command_flag = 0;
+	  }
   }
   /* USER CODE END 3 */
 }
