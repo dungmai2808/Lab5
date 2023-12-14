@@ -101,6 +101,7 @@ int main(void)
   temp = 0;
   HAL_TIM_Base_Start_IT(&htim2);
   HAL_UART_Receive_IT(&huart2, &temp, 1);
+  HAL_ADC_Start(&hadc1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
